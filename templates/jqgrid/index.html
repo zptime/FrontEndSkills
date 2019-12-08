@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>初版jqGrid表格</title>
+    <link rel="stylesheet" href="./css/ui.jqgrid.css"/>
+    <link rel="stylesheet" href="./css/style.css"/>
+    <link rel="stylesheet" href="./css/index.css"/>
+    <script>document.write( " <link rel='stylesheet' href='../../static/resources/css/main.css?rnd= " + Math.random() + " '>" );</script>
+</head>
+<body>
+    <div class="container">
+        <div class="title">初版jqGrid表格-使用实例</div>
+        <div class="desc">
+            实例来源：投票问卷系统
+            <a href="http://vote-test.hbeducloud.com/html/index">http://vote-test.hbeducloud.com/html/index</a>
+            我参与的投票-列表页
+        </div>
+        <div id="main" class="content" v-cloak>
+            <div class="grid">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/contrib/js/vue.js"></script>
+<script src="../../static/pub/layer/layer.js"></script>
+<script src="./js/jquery.jqGrid.min.js"></script>
+<script src="./js/i18n/grid.locale-cn.js"></script>
+<script src="./js/myjgGrid.js"></script>
+<script>document.write('<script src="../../static/resources/js/URLs.js?rnd='+Math.random()+'"><'+'/script>')</script>
+
+<script>
+    $(function () {
+        new Vue({
+            el: '#main',
+            data: {
+
+            },
+            ready:function () {
+                var self = this;
+                self.initData();
+            },
+            methods:{
+                initData:function () {
+                    myjqGrid( $('#grid') ,{
+                        url: URLs().AElectList,
+                        mtype: 'get',
+                        postData: {
+                            type: 1,
+                            elect_status: '',
+                            is_elected: '',
+                            keyword: ''
+                        },
+                        colNames:['id','标题','状态','参与状态','发布时间','操作'],
+                        colModel:[
+                            {name:'elect_id',index:'elect_id',key:true,hidden:true},
+                            {name:'elect_name',index:'elect_name',formatter:fmt_link,width:500,align:"center"},
+                            {name:'elect_status',index:'elect_status',formatter:fmt_status,align:"center"},
+                            {name:'elect_commit_id',index:'elect_commit_id',formatter:fmt_commit_status,align:"center"},
+                            {name:'elect_start_time',index:'elect_commit_start_time',align:"center"},
+                            {name:'oper',index:'oper',formatter:fmt_oper,width:80,align:"center"}
+                        ],
+                        multiselect: false,
+                        ispaged: true,
+                        jsonReader: {
+                            root: "d.data_list",
+                            page: "d.page",
+                            records: "d.total",
+                            total: "d.max_page"
+                        }
+                    },function(){
+                        $('.grid-btn-view').click(function(){
+                            //通过行id获取行内其他数据，getCell方法或者getRowData方法
+                            var id = $(this).parent().attr('id');
+                            var status=$("#grid").getCell(id,'elect_status');
+                            var status2 = $("#grid").jqGrid('getRowData',id).elect_status;
+                            layer.msg('这是预览'+status+'...'+status2);
+                        });
+
+                        $('.grid-btn-edit').click(function(){
+                            var id = $(this).parent().attr('id');
+                            layer.msg('这是编辑'+id);
+                        });
+
+                        $('.grid-btn-del').click(function(){
+                            var id = $(this).parent().attr('id');
+                            layer.msg('这是删除'+id);
+                        });
+                    });
+                    function fmt_link(cellvalue, options, rowObject){
+                        return '<a class="grid-link">'+cellvalue+'</a>'
+                    }
+                    function fmt_status(cellvalue, options, rowObject){
+                        if(cellvalue == 0) {
+                            return '<span class="status-not-start">未开始</span>';
+                        } else if(cellvalue == 1) {
+                            return '<span class="status-start">进行中</span>';
+                        } else if(cellvalue == 2){
+                            return '<span class="status-stop">已结束</span>';
+                        } else if(cellvalue == 3){
+                            return '<span class="status-publish">已发布结果</span>';
+                        } else {
+                            return '';
+                        }
+                    }
+                    function fmt_commit_status(cellvalue, options, rowObject){
+                        if(cellvalue == '') {
+                            return '<span class="status-not-commit">未投票</span>'
+                        } else {
+                            return '已投票';
+                        }
+                    }
+                    function fmt_oper(cellvalue, options, rowObject){
+                        var _html = '<span class="mytooltip">...<span class="mytooltiptext" id="'+rowObject.elect_id+'">';
+                        _html += '<li class="grid-btn-view">预览</li><li class="grid-btn-edit">编辑</li><li class="grid-btn-del">删除</li>';
+                        return  _html;
+                    }
+                },
+                reloadGrid: function() {
+                    $("#grid").jqGrid('setGridParam', {
+                        postData: {
+                            type: 1,
+                            elect_status: '',
+                            is_elected: '',
+                            keyword: ''
+                        },
+                        page: 1
+                    }).trigger("reloadGrid"); // 重新载入
+                }
+            }
+        })
+    })
+</script>
+</html>

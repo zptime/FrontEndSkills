@@ -1,0 +1,62 @@
+/*翻页按钮样式*/
+.page{
+    text-align: center;
+}
+.page input{
+    width: 60px;
+    margin: 0 15px 0 5px;
+}
+.page a{
+    margin: 0 5px;
+    color:#666666;
+}
+.page img{
+    width:16px;
+    height:16px;
+    position: relative;
+    top:-1px;
+    margin:0 10px 0 8px;
+}
+.page span:first-child{
+    letter-spacing: 5px;
+}
+.page span:last-child{
+    margin-left:20px;
+}
+.page .prev{
+    margin:0 8px 0 20px;
+}
+.page .prev::before{
+    content:"";
+    position:absolute;
+    white-space: normal;
+    border-width:7px;
+    border-style:solid;
+    margin-left:8px;
+    transform: translate(-30px,10px);
+    border-color:transparent rgba(41,220,175,0.9) transparent transparent ;
+}
+.page .next{
+    margin-left:24px;
+}
+.page .next::before{
+    content:"";
+    position:absolute;
+    white-space: normal;
+    border-width:7px;
+    border-style:solid;
+    margin-left:16px;
+    transform: translate(-30px,10px);
+    border-color:transparent transparent transparent rgba(41,220,175,0.9);
+}
+.page a.grayness{
+    color:#aaaaaa;
+    cursor:default;
+    pointer-events: none;
+}
+.page a.grayness::before{
+    border-color:transparent rgba(170,170,170,0.9) transparent transparent ;
+}
+.page a.grayness_n::before{
+    border-color:transparent transparent transparent rgba(170,170,170,0.9);
+}

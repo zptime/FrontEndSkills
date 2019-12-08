@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上传文件</title>
+    <link rel="stylesheet" href="../layer/skin/layer.css"/>
+    <link rel="stylesheet" href="../layer/myskin/style.css"/>
+    <link rel="stylesheet" href="./css/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="./css/jquery.ui.plupload.css"/>
+    <link rel="stylesheet" href="./css/index.css"/>
+    <script>document.write( " <link rel='stylesheet' href='../../static/resources/css/main.css?rnd= " + Math.random() + " '>" );</script>
+    <script>document.write( " <link rel='stylesheet' href='../../static/resources/css/base.css?rnd= " + Math.random() + " '>" );</script>
+</head>
+<body>
+<div class="container">
+    <div class="title">上传文件-使用实例</div>
+    <div class="desc">
+        实例来源：通知系统
+        <a href="http://interact-test.hbeducloud.com/html/notice/publish?type=3">http://interact-test.hbeducloud.com/html/notice/publish?type=3</a>
+    </div>
+    <div id="main" class="content" v-cloak>
+        <button class="btn-add borderRadius-15" @click="upLoadFiles()">添加附件</button>
+
+        <!-- 附件信息 -->
+        <div class="files margin-t-20" v-if="files.length>0">
+            <div class="item clb" v-for="(index,file) in files">
+                <img class="fl file-type" :src="fileType(file.file_type)">
+                <div class="file-name margin-r-20">{$ file.file_name $}</div>
+                <div class="c-gray">({$ file.file_size $})</div>
+                <div class="c-red file-del" @click="delFile(index)">删除</div>
+                <img class="fr" src="./img/icon-down.png" @click="downLoad(file.file_url)">
+            </div>
+        </div>
+
+        <div id="modal-upload" class="upload hidden">
+            <div id="uploader-file">
+                <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/contrib/js/vue.js"></script>
+<script src="../../static/pub/layer/layer.js"></script>
+<script src="./js/plupload.full.min.js"></script>
+<script src="./js/zh_CN.js"></script>
+<script src="./js/jquery-ui.min.js"></script>
+<script src="./js/jquery.ui.plupload.js"></script>
+<script>document.write('<script src="../../static/resources/js/utils.js?rnd='+Math.random()+'"><'+'/script>')</script>
+<script>document.write('<script src="../../static/resources/js/URLs.js?rnd='+Math.random()+'"><'+'/script>')</script>
+
+<!--方式一：通过include模板语言，将uploadFile.html文件加载进来，通过type:1，$("#modal-upload")打开-->
+<!--方式二：通过type:2，content: './uploadFile.html'打开-->
+<script>
+    $(function () {
+        new Vue({
+            el: '#main',
+            data: {
+                files:[{//附件
+                    "file_id":"383",
+                    "file_name": "chrome.dll",
+                    "file_size": "45221208",
+                    "file_url": "http://interact-test.hbeducloud.com/media/public/fhxx/file/chrome_18082413561168428619.dll?fname=chrome"
+                }]
+            },
+            ready:function () {
+                var self = this;
+                // 上传附件初始化
+                var MAXNUM_FOR_FILES = 8; // 上传附件个数限制
+                var files = [];
+                initUploader('uploader-file',
+                    'http://interact-test.hbeducloud.com/api/common/upload/file', '50mb',
+                    'file', [], MAXNUM_FOR_FILES, function (data) {
+                        self.files.push(data);
+                    });
+            },
+            methods:{
+                //添加附件
+                upLoadFiles:function (callBack) {
+                    layer.open({
+                        type: 1,
+                        title: "上传附件",
+                        content: $("#modal-upload"),
+                        area: ["740px", "490px"],
+                        end:function () {
+                            if (callBack){
+                                callBack();
+                            }
+                        }
+                    });
+                },
+
+                //文件大小转换
+                convertSize:function (size) {
+                    return convertFileSize(size);
+                },
+
+                //根据文件类型显示对应图标
+                fileType:function (type) {
+                    return fileTypeImg(type);
+                },
+
+                //文件下载
+                downLoad:function (url) {
+                    var elemIF = window.document.createElement("iframe");
+                    elemIF.src = url;
+                    elemIF.style.display = "none";
+                    window.document.body.appendChild(elemIF);
+                },
+
+                //删除附件
+                delFile:function (index) {
+                    this.files.splice(index,1);
+                }
+            }
+        })
+
+    });
+
+    function initUploader(uploader_id, url, max_file_size, file_data_name, filters, max_num,callBack) {
+        $("#"+uploader_id).plupload({
+            runtimes : 'html5,flash,silverlight,html4',
+            url : url,
+            max_file_size : max_file_size,
+            file_data_name: file_data_name,
+            filters : filters,
+            dragdrop: true,
+            views: {
+                list: true,
+                thumbs: true, // Show thumbs
+                active: 'list'
+            },
+            flash_swf_url : './js/Moxie.swf', // Flash settings
+            silverlight_xap_url : './js/Moxie.xap', // Silverlight settings
+            init: {
+                FilesAdded: function(up, file) {
+                    //提示语隐藏
+                    $('.plupload_droptext').css('display','none');
+
+                    // 上传文件个数限制
+                    if(up.files.length > max_num) {
+                        layer.msg('文件个数超过限制！');
+                        up.splice(max_num, 999);
+                        return;
+                    }
+                },
+                FileUploaded: function(up, file, result) {
+                    var res = JSON.parse(result.response);
+                    res.d.file_size = convertFileSize(res.d.file_size);
+                    callBack(res.d);
+                },
+                UploadComplete: function(up, file) {
+                    up.splice();
+                    //提示语显示
+                    $('.plupload_droptext').css('display','block');
+                    layer.closeAll();
+                },
+                Error: function(up, err) {
+                    // 报错
+                    layer.msg(err.message);
+                }
+            }
+        });
+
+        // 界面上传文件格式大小说明
+        var type_tips = filters.length === 0 ? '' : '支持上传'+filters[0].extensions+'格式，';
+        var size_tips = '大小不得超过'+max_file_size+'<br>';
+        $("#"+uploader_id+" .plupload_droptext").prepend(type_tips + size_tips);
+    }
+
+    /*根据附件类型显示对应图片*/
+    function fileTypeImg(type){
+        var url = './img/icon-file-';
+        switch(type)
+        {
+            case 'doc':
+                return url+'doc.png';
+                break;
+            case 'docx':
+                return url+'doc.png';
+                break;
+            case 'ppt':
+                return url+'ppt.png';
+                break;
+                break;
+            case 'xls':
+                return url+'xls.png';
+                break;
+            case 'xlsx':
+                return url+'xls.png';
+                break;
+            case 'zip':
+                return url+'zip.png';
+                break;
+            case 'mp4':
+                return url+'video.png';
+            default:
+                return url+'default.png';
+                break;
+        }
+    }
+
+    /*文件上传*/
+    function upLoadFiles(callBack){
+        layer.open({
+            type: 2,
+            title: "上传附件",
+            content: './uploadFile.html',
+            area: ["740px", "490px"],
+            end:function () {
+                if (callBack){
+                    callBack();
+                }
+            }
+        });
+    }
+</script>
+</html>

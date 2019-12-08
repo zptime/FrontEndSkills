@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>批量导入excel文件</title>
+    <link rel='stylesheet' href='../../static/resources/css/main.css'>
+    <link rel='stylesheet' href='./css/btImport.css'>
+</head>
+<body>
+<div class="container">
+    <div class="title">批量上传excel文件（三步）- 使用实例</div>
+    <div class="desc">
+        实例来源：用户中心--学生管理--导入
+        <a href="http://usercenter-test.hbeducloud.com/index"></a>
+        <br>
+        http://usercenter-test.hbeducloud.com/index
+    </div>
+    <div class="desc">备注：此插件依赖于layer弹框组件</div>
+</div>
+</body>
+
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/pub/layer/layer.js"></script>
+<script src="./js/btImport.js"></script>
+
+<script>
+    $(function () {
+        $.btImport({
+            url: '/api/import/student',
+            templateURL: '/static/files/students_template.xlsx',
+            fileDesc: '请下载EXCEL模板后填写并上传学生信息' +
+            '<br>注：新用户默认密码为学号后六位',
+            success: function(){
+                reloadGrid();
+            },
+            successInfo: '学生账号导入成功，您可以在学生管理中查看!'
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,27 @@
+.btn-add {
+    width: 100px;
+    color: #308ce3;
+    background-color: #fff;
+}
+.c-gray{color:#aaa;}
+.c-blue{color:#4685ff;}
+.c-orange{color:#ff9e35;}
+.c-red{color:#fd5555;}
+
+/*upload样式更改*/
+.upload{width:700px;height: 370px;margin:0 auto;}
+.plupload_content{bottom:70px;}
+.plupload_wrapper table{}
+.plupload_container{height:440px;}
+.upload .ui-state-highlight{border:none;}
+
+/*文件展示*/
+.files{padding-bottom:30px;}
+.files .tip{font-size: 16px;color: #000;margin-bottom:20px;}
+.files .tip span{margin-left:10px;}
+.files .item{margin-bottom:10px;border:1px solid #dcdcdc;height:50px;line-height:50px;border-radius:25px;}
+.files .item div{float:left;font-size: 14px;}
+.files .item .file-name{color:#444;max-width:420px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;}
+.files .item .file-type{width: 30px;height: 30px;margin:10px 10px 10px 20px;}
+.files .item .file-del{float:right;cursor: pointer;margin-right: 20px;}
+

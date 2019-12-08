@@ -1,0 +1,29 @@
+{
+  "c": 0,
+  "m": "完成",
+  "d": [{
+    "username": "fenghuo",
+    "full_name": "李明",
+    "address": "",
+    "school_name_simple": "烽火小学",
+    "account_id": 2,
+    "sex": "女",
+    "birthday": "",
+    "is_available": true,
+    "school_name_full": "烽火小学",
+    "out_date": "",
+    "school_code": "FH001A",
+    "id": 1,
+    "is_in": true,
+    "kind": "",
+    "title": "团委,班主任,教导主任,校长,灯光师",
+    "mobile": "18717891741",
+    "tmp_code": "",
+    "id_card": "420621196811058944",
+    "comments": "",
+    "native_place": "",
+    "image_url": "/school_center_dev/1/3aa6aa9a3c92400cbc26a2ddfc9f1d26.png",
+    "in_date": "",
+    "email": ""
+  }]
+}

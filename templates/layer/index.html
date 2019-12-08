@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新版layer弹框</title>
+    <link rel="stylesheet" href="./skin/layer.css"/>
+    <link rel="stylesheet" href="./myskin/style.css"/>
+    <link rel="stylesheet" href="../../static/resources/css/main.css"/>
+    <link rel="stylesheet" href="../../static/resources/css/base.css"/>
+    <link rel="stylesheet" href="../../static/pub/mCustomScrollbar/css/jquery.mCustomScrollbar.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="title">新版layer弹框-使用实例</div>
+    <div class="desc">
+        实例来源：网盘系统
+        <a href="http://netdisk-test.hbeducloud.com/html/index">http://netdisk-test.hbeducloud.com/html/index</a>
+    </div>
+    <div id="main" class="content" v-cloak>
+        <button onclick="optBtn('del')">删除提示</button>
+        <button onclick="optBtn('none')">无数据提示</button>
+        <button onclick="optBtn('choose')">选人弹框</button>
+
+        <!--查看人员弹出框-->
+        <div id="modal-person" class="hidden">
+            <div class="modal-tool clb">
+                <div class="modal-tool-check fl" @click="selectAll">
+                    <span :class="{'select-all':chooseVal=='全选'}">{$ chooseVal $}</span>
+                </div>
+                <div class="fr">
+                    <input id="searchInput" class="borderRadius-15 margin-r-20 fl" name="keyword" onkeydown="keyDown(event);" type="text" placeholder="请输入姓名">
+                    <div id="searchBtn" class="modal-tool-search fl" @click="searchPerson"></div>
+                </div>
+            </div>
+            <div class="modal-main">
+                <div class="modal-card borderRadius-4 boxShadowGray fl" :class="{active: activeList.indexOf(person.id)>=0}" v-for="person in personList" @click="selectPerson(person.id)" v-if="person.full_name.indexOf(keyword)!=-1">
+                    <!--<img :src="person.image_url" v-if="person.image_url">-->
+                    <!--<img src="./image/photo-default.png" v-else>-->
+                    <img src="./image/photo-default.png">
+                    <div >{$ person.full_name $}</div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="modal-btn">
+                <button class="modal-btn-cancel borderRadius-15 fr" @click="selectCancel">取消</button>
+                <button class="borderRadius-15 fr" @click="selectOk">确定</button>
+                <span class="total margin-r-20">共 {$ personList.length $} 人</span>
+                <span class="total">已选择 {$ activeList.length $} 人</span>
+            </div>
+        </div>
+
+        <!-- 查看人员弹出框-无人员时提示 -->
+        <div id="modal-tip" class="noneData hidden">
+            <div class="warn"></div>
+            <div class="warn-title">暂无任何人员属于该职务！</div>
+            <div class="warn-tip">您可以选择“添加人员”，将人员赋予该职务！</div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/contrib/js/vue.js"></script>
+<script src="../../static/pub/mCustomScrollbar/js/jquery.mCustomScrollbar.js"></script>
+<script src="./layer.js"></script>
+<script>document.write('<script src="../../static/resources/js/utils.js?rnd='+Math.random()+'"><'+'/script>')</script>
+<script>document.write('<script src="../../static/resources/js/URLs.js?rnd='+Math.random()+'"><'+'/script>')</script>
+<script>
+    var vm = new Vue({
+        el: '#main',
+        data: {
+            keyword:'',//查询关键字
+            chooseVal:'全选',//全选、取消全选
+            personList: [],//人员列表
+            activeList: [] //已选择人员id列表
+        },
+        ready:function () {
+            var self = this;
+
+            $('.modal-main').mCustomScrollbar({});
+
+            myajax({
+                url: URLs().ATeacherList,
+                data:{
+                    'title':'教师'
+                }
+            },function(data){
+                if (data.c == 0){
+                    self.personList = data.d.items;
+                }
+            });
+        },
+        methods:{
+            //查询事件
+            searchPerson: function() {
+                var self = this;
+                self.keyword = $('#searchInput').val();
+                self.chooseVal='全选';
+            },
+            //单选事件
+            selectPerson: function(id) {
+                var self = this;
+                var i = self.activeList.indexOf(id);
+                if(i >= 0) {
+                    self.activeList.splice(i, 1);
+                } else {
+                    self.activeList.push(id);
+                }
+            },
+            //全选事件
+            selectAll:function () {
+                var self = this;
+                //深拷贝 Object.assign(target,source)
+                //复制(互不关联的对象副本) obj=JSON.parse(JSON.stringify(this.templateData));
+                if(self.chooseVal=='全选') {
+                    self.chooseVal="取消全选";
+                    $.each(self.personList, function(index, person) {
+                        var i = self.activeList.indexOf(person.id);
+                        if(person.full_name.indexOf(self.keyword)!=-1 && i==-1){
+                            self.activeList.push(person.id);
+                        }
+                    });
+                } else {
+                    self.chooseVal="全选";
+                    $.each(self.personList, function(index, person) {
+                        var i = self.activeList.indexOf(person.id);
+                        if(person.full_name.indexOf(self.keyword)!=-1 && i!=-1){
+                            self.activeList.splice(i, 1);
+                        }
+                    });
+                }
+            },
+            //选择框-确实事件
+            selectOk: function() {
+                var self = this;
+                alert(JSON.stringify(self.activeList.join(',')));
+                alert('这是确定事件');
+                self.clearLayer();
+            },
+            //选择框-取消事件
+            selectCancel: function() {
+                var self = this;
+                alert('这是取消事件');
+                self.clearLayer();
+            },
+            //关闭选择框前-清除数据
+            clearLayer:function () {
+                var self = this;
+                self.keyword = '';
+                self.chooseVal='全选';
+                self.activeList = [];
+                $('#searchInput').val('');
+                layer.closeAll();
+            }
+        }
+    });
+
+    //输入框的enter事件
+    function keyDown(e){
+        var evt = window.event || e;
+        if (evt.keyCode == 13){
+            //回车事件
+            $('#searchBtn').click();
+        }
+    }
+
+    optBtn('choose');
+    function optBtn(type) {
+        switch (type){
+            case 'del':
+                var content = '<div class="myDel"><div class="warn"></div>' +
+                    '<div class="content">'+
+                    '<div class="title">确定要删除这个通知吗？</div>'+
+                    '<div class="tip">被删除的通知将无法被再次找回！</div>'+
+                    '</div></div>';
+
+                layer.open({
+                    type:1,
+                    area:["500px","300px"],
+                    title:"删除提示",
+                    btn:["确定","取消"],
+                    content:content,
+                    yes: function (index) {
+                        layer.close(index);
+                        layer.msg('确定');
+                    }
+                });
+                break;
+            case 'choose':
+                layer.open({
+                    type: 1,
+                    area: ['860px','550px'], //宽高
+                    title: '选择人员',
+                    content: $('#modal-person'),
+                    cancel: function(){
+                        vm.selectCancel();
+                    }
+                });
+                break;
+            case 'none':
+                layer.open({
+                    type: 1,
+                    area: ["500px","300px"], //宽高
+                    title: '无数据提示',
+                    content:$('#modal-tip'),
+                    btn:["确定","取消"],
+                    yes: function (index) {
+                        layer.close(index);
+                    },
+                    cancel: function(index){
+                        layer.close(index);
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+</script>
+</html>

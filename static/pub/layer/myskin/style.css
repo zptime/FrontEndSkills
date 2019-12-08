@@ -1,0 +1,23 @@
+/*--------------------新版 统一浮窗样式 start----------------------------*/
+div.layui-layer{overflow: hidden;border-radius: 5px;}
+.layui-layer .layui-layer-title{color: #444444;font-size: 16px;font-weight: bold;background: #ffffff;border-bottom: solid 1px #f0f0f0;}
+.layui-layer-setwin .layui-layer-close1{ background-position: 0 -2px;opacity: 0.7;margin-top: -5px;}
+.layui-layer .layui-layer-setwin .layui-layer-ico{background: url("/static/pub/layer/image/delete.png") no-repeat;}
+.layui-layer .layui-layer-setwin a{ width: 24px; height: 24px;}
+body .layui-layer .layui-layer-btn a{padding: 0 25px;border-radius: 20px;}
+.layui-layer .layui-layer-btn .layui-layer-btn1{background: #fff;}
+.layui-layer-iframe .layui-layer-btn, .layui-layer-page .layui-layer-btn{padding-left:40px;padding-right: 40px;}
+
+.layui-layer-content .myDel{margin:54px 40px 0 40px;position: relative;}
+.layui-layer-content .myDel .warn{position: absolute;left: 0;top: 0;width: 50px;height: 50px;background: url('/static/pub/layer/image/warning.png') 100% 100%;background-size: 100% 100%;}
+.layui-layer-content .myDel .content{padding-left: 60px;}
+.layui-layer-content .myDel .content .title{line-height:26px;font-size: 16px;color:#444;}
+.layui-layer-content .myDel .content .tip{margin-top:8px;color: #888;font-size: 14px;}
+
+
+button.btn1{background-color:#fff;color:#308ce3;border: 1px solid #308ce3;}
+button.btn1:hover{background-color:rgba(70,133,255,.1)}
+button.btn1[disabled]{background-color:#fff;color:rgba(70,133,255,.6);border:1px solid rgba(70,133,255,.6);cursor:default;}
+button.btn2{background-color:#fff;color:#666666;border: 1px solid #dcdcdc;}
+button.btn2:hover{background-color:rgba(102,102,102,.1)}
+/*--------------------新版 统一浮窗样式 start----------------------------*/

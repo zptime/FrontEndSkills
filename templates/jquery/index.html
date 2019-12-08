@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jquery开发插件</title>
+    <link rel='stylesheet' href='../../static/resources/css/main.css'>
+</head>
+<body>
+<div class="container">
+    <div class="title">jquery开发插件的两个方法 - 使用实例</div>
+    <div class="desc">
+        1.jQuery.extend(object)：为扩展jQuery类本身.为类添加新的方法。
+        <br>
+        2.jQuery.fn.extend(object)：给jQuery对象添加方法。jQuery.fn = jQuery.prototype（原型）
+        <br>
+        https://www.cnblogs.com/yuqingfamily/p/5775950.html
+        <br>
+        3.虽然 JavaScript 没有明确的类的概念，但是用类来理解它，会更方便。jQuery便是一个封装得非常好的类，比如我们用 语句$("#div1")会生成一个 jQuery类的实例。
+        <br>
+        jQuery.extend() 的调用并不会把方法扩展到对象的实例上，引用它的方法也需要通过jQuery类来实现，如jQuery.init()
+        <br>
+        jQuery.fn.extend()的调用把方法扩展到了对象的prototype上，所以实例化一个jQuery对象的时候，它就具有了这些方法，在jQuery.JS中到处体现这一点
+        <input type="button" id="input1" value="这是$.fn.extend"/>
+    </div>
+</div>
+</body>
+
+<script src="../../static/contrib/js/jquery.min.js"></script>
+
+<script>
+    (function ($) {
+        //jQuery.extend(object)：为jQuery类添加类方法，可以理解为添加静态方法。
+        $.extend({
+            min: function(a, b) {
+                return a < b ? a : b;
+            },
+            max: function(a, b) {
+                return a > b ? a : b;
+            }
+        });
+        alert($.min(2, 3)); //  2
+        alert($.max(4, 5)); //  5
+
+
+        //jQuery.fn.extend(object)：为jQuery类添加“成员函数”。jQuery类的实例才可以调用这个“成员函数”。
+        //比如我们要开发一个插件，做一个特殊的编辑框，当它被点击时，便alert 当前编辑框里的内容。可以这么做：
+        $.fn.extend({
+            alertWhileClick: function() {
+                $(this).click(function() {
+                    alert($(this).val());
+                });
+            }
+        });
+        //$("#input1")是jQuery的实例，调用这个扩展方法
+        $("#input1").alertWhileClick();
+    })(jQuery);
+
+    //jQuery.fn.extend = jQuery.prototype.extend
+    //你可以拓展一个对象到jQuery的 prototype里去，这样的话就是插件机制了。
+//    (function( $ ){
+    //        $.fn.tooltip = function( options ) {};
+    //        //等价于
+    //        var tooltip = {
+    //            function(options){}
+    //        };
+    //        $.fn.extend(tooltip) = $.prototype.extend(tooltip) = $.fn.tooltip
+    //    })( jQuery );
+</script>
+</html>

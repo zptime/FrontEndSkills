@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>翻页按钮</title>
+    <link rel="stylesheet" href="./css/index.css"/>
+    <script>document.write( " <link rel='stylesheet' href='../../static/resources/css/main.css?rnd= " + Math.random() + " '>" );</script>
+    <script>document.write( " <link rel='stylesheet' href='../../static/resources/css/base.css?rnd= " + Math.random() + " '>" );</script>
+</head>
+<body>
+<div class="container">
+    <div class="title">自定义翻页按钮操作-使用实例</div>
+    <div class="desc">
+        实例来源：光谷六小门户网站
+    </div>
+    <div id="main" class="content" v-cloak>
+        <div class="page">
+            <a href="javascript:;" @click="queryArticleList(1)" :class="{grayness:current_page==1}">首页</a>
+            <a href="javascript:;" @click="queryArticleList(current_page-1)" class="prev" :class="{grayness:current_page==1}"></a>
+            <span>{$ current_page $} / {$ article.total $}</span>
+            <a href="javascript:;" @click="queryArticleList(current_page+1)" class="next" :class="{grayness_n:current_page==article.total}"></a>
+            <a href="javascript:;" @click="queryArticleList(article.total)" :class="{grayness:current_page==article.total}">尾页</a>
+            <span>
+                跳转<input id="page" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+                共{$ article.total $}页{$ article.records $}条
+            </span>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/contrib/js/vue.js"></script>
+<script src="../../static/pub/layer/layer.js"></script>
+<script>document.write('<script src="../../static/resources/js/utils.js?rnd='+Math.random()+'"><'+'/script>')</script>
+<script>document.write('<script src="../../static/resources/js/URLs.js?rnd='+Math.random()+'"><'+'/script>')</script>
+
+<script>
+    $(function () {
+        new Vue({
+            el: '#main',
+            data: {
+                current_page:1,
+                article:{
+                    total:3,//页数
+                    records:30//记录数
+                }
+
+            },
+            ready:function () {
+                var self = this;
+                // 翻页跳转
+                $("#page").keydown(function(event){
+                    if(event.which == "13"){
+                        self.queryArticleList(Number($("#page").val()));
+                        $("#page").val("").blur();
+                    }
+                });
+            },
+            methods:{
+                queryArticleList:function (page) {
+                    layer.msg('正在查询数据...，页码为'+page);
+                }
+            }
+        })
+
+    });
+
+
+    //onkeyup:按键抬起时执行
+    function pageKeyUp(){
+        var value = $('#page').val();
+        if(value.length==1){
+            value = value.replace(/[^1-9]/g,'')
+        }else{
+            value = value.replace(/\D/g,'')
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>湖北省教育云</title>
+    <script>document.write( " <link rel='stylesheet' href='./css/index.css?rnd= " + Math.random() + " '>" );</script>
+</head>
+<body id="background">
+    <div class="container">
+        <div class="header">湖北省教育云</div>
+
+        <div class="main">
+            <div class="info introBg borderRadius" onclick="urlGo('0')">
+                <div class="title">
+                    <a href="#">湖北省教育资源公共服务平台2.0</a>
+                </div>
+                <div class="net">
+                    <a href="#">new.hbeducloud.com</a>
+                </div>
+                <div class="slogan centerMiddle clb">
+                    <div class="sloganImg iconService2 fl">
+                        <!--<img src="./image/service2.0.png">-->
+                    </div>
+                    <div class="sloganInfo fl">
+                        <div class="item clb">
+                            <div class="circle fl"><div class="circle-inner"></div></div>
+                            <div class="fl">开放、兼容、共建、共享</div>
+                        </div>
+                        <div class="item clb">
+                            <div class="circle fl"><div class="circle-inner"></div></div>
+                            <div class="fl">教育信息化2.0大平台、大资源、大数据</div>
+                        </div>
+                        <div class="item clb">
+                            <div class="circle fl"><div class="circle-inner"></div></div>
+                            <div class="fl">教育信息化统一平台，唯一入口</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subInfo clb">
+                <div class="subItem introBg borderRadius fl" onclick="urlGo('1')">
+                    <div class="itemTitle">湖北省教育资源公共服务平台1.0</div>
+                    <div class="itemImg iconService1">
+                        <!--<img src="./image/service1.0.png">-->
+                    </div>
+                </div>
+                <div class="subItem introBg borderRadius fl" onclick="urlGo('2')">
+                    <div class="itemTitle">竞赛网</div>
+                    <div class="itemImg iconCompetition">
+                        <!--<img src="./image/competition.png">-->
+                    </div>
+                </div>
+                <div class="subItem introBg borderRadius fl" onclick="urlGo('3')">
+                    <div class="itemTitle">湖北省特色教育资源</div>
+                    <div class="itemImg iconResource">
+                        <!--<img src="./image/resources.png">-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer centerMiddle clb">
+            <div class="fl mr-60">版权所有：湖北省教育资源公共服务平台</div>
+            <div class="fl mr-60">运营支持：湖北省楚天云有限公司</div>
+            <div class="fl">鄂ICP备05010814号-3</div>
+        </div>
+    </div>
+</body>
+
+<script src="./js/jquery.min.js"></script>
+<script>
+    addFadeInBackground('./image/bg.png', 'background');
+
+    function addFadeInBackground(url, domId) {
+        var background = new Image();
+        background.src = url;
+        background.onload = function () {
+            var loadbackground = document.getElementById(domId);
+            loadbackground.style.backgroundImage = 'url(' + background.src + ')';
+            loadbackground.style.animationName = 'fadein';
+        }
+    }
+
+    function urlGo(url) {
+//        window.location.href='#';
+//        window.open(url);
+    }
+</script>
+</html>

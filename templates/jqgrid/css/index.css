@@ -1,0 +1,16 @@
+/*jqGrid颜色样式*/
+.grid-link {
+    color: #308ce3;
+}
+.status-not-start, .status-not-commit {
+    color: #aaa;
+}
+.status-start {
+    color:#6dc666;
+}
+.status-stop {
+    color: #fd5555;
+}
+.status-publish{
+    color:#f19b4f;
+}

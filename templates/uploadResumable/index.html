@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>批量上传</title>
+    <script>document.write( " <link rel='stylesheet' href='../../static/resources/css/main.css?rnd= " + Math.random() + " '>" );</script>
+</head>
+<body>
+<div class="container">
+    <div class="title">批量上传-使用实例</div>
+    <div class="desc">
+        实例来源：网盘系统
+        <a href="http://netdisk-test.hbeducloud.com/html/index">http://netdisk-test.hbeducloud.com/html/index</a>
+        <br>
+        教师云盘<a href="http://test-pan.hbeducloud.com:8088/">http://test-pan.hbeducloud.com:8088/</a>
+        <br>
+        本地上传功能--使用django-resumable插件
+    </div>
+</div>
+</body>
+
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/pub/layer/layer.js"></script>
+
+<script>
+    $(function () {
+//        uploadFiles('./upload_client.html',function () {})
+
+        layer.open({
+            type: 2,
+            title: "上传文件",
+            content: './upload.html',
+            area:["740px","450px"],
+            cancel: function () {
+            }
+        });
+    });
+
+    //上传本地文件
+    function uploadFiles(contentUrl,callBack) {
+        layer.open({
+            type: 2,
+            title: "上传客户端",
+            content: contentUrl,
+            area: ["740px", "490px"],
+            cancel: function () {
+            },
+            end:function () {
+                if (callBack){
+                    callBack();
+                }
+            }
+        });
+    }
+</script>
+</html>

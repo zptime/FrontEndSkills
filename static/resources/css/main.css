@@ -1,0 +1,21 @@
+/*内容主要样式*/
+.container{
+    width:1000px;
+    min-height:500px;
+    background-color: #fff;
+    margin:50px auto;
+}
+.container .title{
+    border-bottom: 2px solid #e5e5e5;
+    height: 50px;
+    line-height:50px;
+    font-size:20px;
+    text-align: center;
+}
+.container .desc{
+    line-height: 30px;
+    padding:20px;
+}
+.container .content{
+    padding:0 20px;
+}

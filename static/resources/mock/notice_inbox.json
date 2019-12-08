@@ -1,0 +1,54 @@
+{
+  "c": 0,
+  "m": "完成",
+  "d": {
+    "max_page": 1,
+    "total": 3,
+    "page": 1,
+    "data_list": [{
+      "has_file": "1",
+      "has_voice": "1",
+      "is_read": "0",
+      "create_time": "2018-08-31 09:14",
+      "sender_username": "0831发布全校通知",
+      "sender_avatar": "http://usercenter-test.hbeducloud.com/school_center_dev/1/3aa6aa9a3c92400cbc26a2ddfc9f1d26.png",
+      "content": "发布全校通知测试",
+      "sender_school_id": "1",
+      "type_desc": "全校通知",
+      "sender_account_id": "2",
+      "notify_id": "202",
+      "sender_user_type": "2",
+      "type": "3"
+    },
+      {
+        "has_file": "0",
+        "has_voice": "0",
+        "is_read": "1",
+        "create_time": "2018-08-30 13:51",
+        "sender_username": "校长办公室",
+        "sender_avatar": "http://usercenter-test.hbeducloud.com/school_center_dev/1/3aa6aa9a3c92400cbc26a2ddfc9f1d26.png",
+        "content": "0830\n全校通知测试\n测试一下\n你就知道\n嗨\n嗨\n嗨\n嗨\n嗨",
+        "sender_school_id": "1",
+        "type_desc": "全校通知",
+        "sender_account_id": "2",
+        "notify_id": "201",
+        "sender_user_type": "2",
+        "type": "3"
+      },
+      {
+        "has_file": "0",
+        "has_voice": "0",
+        "is_read": "1",
+        "create_time": "2018-08-27 16:30",
+        "sender_username": "李明",
+        "sender_avatar": "http://usercenter-test.hbeducloud.com/school_center_dev/1/3aa6aa9a3c92400cbc26a2ddfc9f1d26.png",
+        "content": "\"123\"",
+        "sender_school_id": "1",
+        "type_desc": "全校通知",
+        "sender_account_id": "2",
+        "notify_id": "187",
+        "sender_user_type": "2",
+        "type": "3"
+      }]
+  }
+}

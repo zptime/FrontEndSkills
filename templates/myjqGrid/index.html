@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新版jqGrid表格</title>
+    <link rel="stylesheet" href="./css/ui.jqgrid.css"/>
+    <link rel="stylesheet" href="./css/myjqGrid.css"/>
+    <script>document.write( " <link rel='stylesheet' href='../../static/resources/css/main.css?rnd= " + Math.random() + " '>" );</script>
+    <style>
+        /*特例样式*/
+        #jqgh_grid_show_content{text-align: left;}
+        .ui-jqgrid .is-read{color:#4685ff;}
+        .ui-jqgrid .has-file{display: inline-block;  position: relative;  left: -6px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">新版jqGrid表格-使用实例</div>
+        <div class="desc">
+            实例来源：通知系统
+            <a href="http://test-interact.hbeducloud.com:8088/html/notice/inbox">http://test-interact.hbeducloud.com:8088/html/notice/inbox</a>
+            收件箱-列表页
+        </div>
+        <div id="main" class="content" v-cloak>
+            <div class="gridTool">
+                <span class="toolCheck">
+                    <input type="checkbox" id="grid_multipleBtn">
+                    <label class="cb_label" for="grid_multipleBtn"></label>
+                </span>
+                <span class="toolBtn">全选</span>
+                <span class="toolBtn" onclick="optBtn('del')">删除</span>
+                <span class="toolBtn" onclick="optBtn('read')">标记为已读</span>
+                <span class="toolBtn" onclick="optBtn('unread')">标记为未读</span>
+            </div>
+            <div class="grid">
+                <table id="grid"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/contrib/js/vue.js"></script>
+<script src="../../static/pub/layer/layer.js"></script>
+<script src="./js/jquery.jqGrid.min.js"></script>
+<script src="./js/i18n/grid.locale-cn.js"></script>
+<script src="./js/myjqGrid.js"></script>
+<script>document.write('<script src="../../static/resources/js/URLs.js?rnd='+Math.random()+'"><'+'/script>')</script>
+
+<script>
+    $(function () {
+        new Vue({
+            el: '#main',
+            data: {},
+            ready: function () {
+                var self = this;
+                self.initData();
+            },
+            methods: {
+                //初始化表格
+                initData: function () {
+                    $('#grid').myjqGrid({
+                        url: URLs().ANoticeInbox,
+                        mtype: 'GET',
+                        postData: {
+                            keyword: ''
+                        },
+                        colNames: ['id', '是否已读', '纯主题', '主题', '通知类型id', '通知类型', '时间', '操作','操作'],
+                        colModel: [
+                            {name: 'notify_id', index: 'notify_id', key: true, hidden: true, sortable: false},
+                            {name: 'is_read', index: 'is_read', hidden: true, sortable: false},
+                            {name: 'content', index: 'content', hidden: true, sortable: false},
+                            {name: 'show_content', index: 'show_content', formatter: fmt_cnt, align: 'left', sortable: false},
+                            {name: 'type', index: 'type', hidden: true, sortable: false},
+                            {name: 'type_desc', index: 'type_desc', hidden: true, width: 100, sortable: false},
+                            {name: 'create_time', index: 'create_time', width: 100, sortable: false},
+                            {name: 'opt', index: 'opt', formatter: fmt_opt, width: 80, sortable: false},
+                            {name: 'oper', index: 'oper', formatter: fmt_oper, width: 80, sortable: false}
+                        ],
+                        multiselect: true,
+                        ispaged: true,
+                        jsonReader: {
+                            root: "d.data_list"
+                        },
+                        multipleBtn: '#grid_multipleBtn'
+                    }, function () {
+                        $('.grid-opt-del').click(function (event) {
+                            var id = $(this).parent().attr('id');
+                            optBtn('del', id);
+                            //防止冒泡，点击后，多选框不被选中
+                            event.stopPropagation();
+                        });
+
+                        $('.grid-opt-detail').click(function (event) {
+                            var id = $(this).attr('id');
+                            layer.msg('进入详情');
+                            event.stopPropagation();
+                        });
+                    });
+                    /*表格-主题显示*/
+                    function fmt_cnt(cellvalue, options, rowObject){
+                        var _html = '';
+                        var content = '';
+                        if(rowObject.content) content = rowObject.content;
+                        content = content.replace(/\n/g, ' ').replace(/\s/g, ' ');
+
+                        if(rowObject.has_file==1){
+                            _html = '<span class="has-file">【附件】'+ content +'</span>';
+                        }else{
+                            _html = content;
+                        }
+
+                        if(rowObject.is_read==0){//未读标记为蓝色
+                            _html = '<span class="is-read">'+_html+'</span>';
+                        }
+                        _html = '<span class="grid-opt grid-opt-detail" id="'+rowObject.notify_id+'">' + _html + '</span>';
+                        return  _html;
+                    }
+
+                    /*表格-操作栏-删除显示*/
+                    function fmt_opt(cellvalue, options, rowObject){
+                        var _html = '<span class="grid-opt" id="'+rowObject.notify_id+'">' +
+                            '<span class="grid-opt-del">删除</span>' +
+                            '</span>';
+                        return  _html;
+                    }
+
+                    /*表格-操作栏-多项操作显示*/
+                    function fmt_oper(cellvalue, options, rowObject){
+                        var _html = '<span class="mytooltip">...<span class="mytooltiptext" id="'+rowObject.elect_id+'">';
+                        _html += '<li class="grid-btn-view">预览</li><li class="grid-btn-edit">编辑</li><li class="grid-btn-del">删除</li>';
+                        return  _html;
+                    }
+                }
+            }
+        })
+    });
+
+    /*表格操作事件*/
+    function optBtn(type,id) {
+        var userIds = [];
+        if(!!id){
+            userIds.push(id);
+        }else{
+            if(hascheckedrows(function(data){
+                    userIds = data;
+                })){}else{
+                return false;
+            }
+        }
+
+        var ids = userIds.join(',');
+
+        switch(type)
+        {
+            //删除
+            case 'del':
+                layer.msg('这是删除'+ids);
+                break;
+            //标记为已读
+            case 'read':
+                layer.msg('这是标记为已读'+ids);
+                break;
+            //标记为未读
+            case 'unread':
+                layer.msg('这是标记为未读'+ids);
+                break;
+            default:
+                break;
+        }
+    }
+</script>
+</html>

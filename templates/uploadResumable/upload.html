@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+    <script>
+        document.write('<link rel="stylesheet" href="./css/resumable.css?version='+Math.random()+'">');
+    </script>
+    <style>
+        .btn-medium{width: 100px;height: 32px;line-height: 32px;text-align: center;border: solid 1px #4685FF;color: #4685FF;cursor: pointer;border-radius: 6px;background: #FFFFFF;outline: none;overflow: hidden;}
+        .btn-medium:hover{background: #4685FF;color: #FFFFFF;}
+        .re-upload .upload-form .upload-core-box{font-size: 14px;}
+        .re-upload .upload-addfile-top{font-size: 14px;}
+        .re-upload .upload-addfile-bottom{bottom: 30px;}
+        /*.re-upload .upload-addfile-bottom{display: none !important;}*/
+    </style>
+</head>
+<body>
+<div class="lay-upload">
+    <div class="re-upload" id="reUpload">
+    </div>
+</div>
+</body>
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/pub/layer/layer.js"></script>
+<script src="./js/spark-md5.js"></script>
+<script>
+    document.write( " <script src='./js/django-resumable.js?version=" + Math.random() + " '></s" + "cript> " );
+    document.write( " <script src='./js/resumable.js?version=" + Math.random() + " '></s" + "cript> " );
+    document.write( " <script src='../../static/resources/js/utils.js?version=" + Math.random() + " '></s" + "cript> " );
+</script>
+<script>
+    initDjangoResumable(function () {
+        layer.msg("上传成功："+JSON.stringify(data));
+        var files_arr = [];
+        for(var i=0;i<data.d.length;i++){
+            files_arr.push(data.d[i].id);
+        }
+    });
+
+    function initDjangoResumable(callback) {
+        "use strict";
+        var dj;
+        if (new Resumable().support) {
+            dj = new DjangoResumable({
+                xhrfile:{
+                    beforeStart: function () {
+                        console.log("开始上传之前的处理！");
+                        return true;
+                    },
+                    success: function (data,callback) {
+                        if (data.c == 0){
+                            callback();
+                        }else{
+                            return false;
+                        }
+                    },
+                    confirm: function(files){
+                        layer.msg('这是底部确定按钮事件');
+                    },
+                    cancel: function(){
+                        layer.msg('这是底部取消按钮事件');
+                    }
+                },
+//                uploadUrl:'http://netdisk-test.hbeducloud.com/api/upload/resumable',
+                view:{
+                    container: document.getElementById('reUpload'),
+                    addBtn: true,
+                    startBtn: true,
+                    dragable: true
+                },
+                resumableOptions:{
+                    maxFiles:6//一次可选的最大文件数
+                    //fileType:['rar','zip','7z'],//
+                }
+            });
+            window.mydjResumable = dj;
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,107 @@
+/**基本样式**/
+html,body{height: 100%; color: #444;background-color: #f5f5f5;}
+*{font-family: "microsoft yahei"}
+input, button, select,textarea{outline:none}
+input:focus,select:focus,textarea:focus,div[contenteditable]:focus{border:1px solid #308ce3}
+a,button,img,input,input[type=checkbox]{cursor:pointer}
+
+input{border:1px solid #ccc;border-radius:4px;height:28px;width:122px;padding:0 8px;}
+input[disabled]{border: 1px solid #eee;background-color: #eee;}
+input[type=checkbox],input[type=radio]{height:14px;width:20px !important;vertical-align:middle;margin:0}
+
+select{appearance:none;-moz-appearance:none;-webkit-appearance:none;background:url(/static/resources/images/icon/icon-arrow-down.png) no-repeat scroll right center transparent;}
+select{border:1px solid #ccc;border-radius:4px;height:30px;width:120px;padding:0 8px;background-color: #ffffff;}
+select option{font-size: 14px}
+select[disabled]{border: 1px solid #eee;background-color: #eee;}
+
+button{border:1px solid #308ce3;border-radius:4px;height:30px;width:80px;margin:0;padding:0;font-family: "microsoft yahei";font-size:14px;color:#fff;background-color:#308ce3}
+button:hover{background-color:rgba(70,133,255,.9)}
+button[disabled]{background-color:rgba(70,133,255,.6);border:none;cursor:default;}
+
+a{color: #444;text-decoration: none;}
+a.clickable{color: #308ce3;}
+a:hover{color: #308ce3;}
+a.active{color: #308ce3;}
+
+label{display:inline}
+textarea{border:1px solid #ccc;border-radius:4px;resize:none}
+ul{display:block;list-style-type:disc;margin:0;padding:0}
+li{display:inline-block;text-align:left}
+hr{margin:0 auto;padding:0;}
+
+::-webkit-input-placeholder{color:#aaa;}
+:-moz-placeholder{color:#aaa;}
+::-moz-placeholder{color:#aaa;}
+:-ms-input-placeholder{color:#aaa;}
+
+
+
+/**公共样式**/
+.margin20{margin:20px 20px 20px 20px}
+.margin20-tb{margin:20px 0 20px 0}
+.margin20-lr{margin:0 20px 0 20px}
+.margin20-t{margin:20px 0 0 0}
+.margin20-r{margin:0 20px 0 0}
+.margin20-b{margin:0 0 20px 0}
+.margin20-l{margin:0 0 0 20px}
+.margin10-l{margin:0 0 0 10px}
+.margin10-r{margin:0 10px 0 0}
+.margin10-t{margin:10px 0 0 0}
+.margin10-b{margin:0 0 10px 0}
+.margin10-tl{margin:10px 0 0 10px}
+
+.fl{float: left;}
+.fr{float: right;}
+.hidden{display: none;}
+.clb:after{content: "";display: block;clear: both;}
+.borderRadius-4{-webkit-border-radius:4px;-moz-border-radius:4px;-ms-border-radius:4px;-o-border-radius:4px;border-radius:4px;}
+.borderRadius-15{-webkit-border-radius:15px;-moz-border-radius:15px;-ms-border-radius:15px;-o-border-radius:15px;border-radius:15px;}
+.borderRadius-50{-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;}
+
+.centerMiddle{
+    display: flex;/*flex布局*/
+    justify-content: center; /*使子项目水平居中*/
+    align-items: center;/*使子项目垂直居中*/
+}
+
+/*顺时针旋转180度*/
+.rotate180 {
+    filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.boxShadowGray{
+  box-shadow: 0 0 16px 4px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.08);
+}
+
+
+
+/*头部样式*/
+.outer-head{padding: 28px 0 0;height: 90px;border-top: solid 1px #eee;border-bottom: solid 1px #eee;background: #fff;}
+.outer-head-content{width:1160px;padding:0 20px;margin:0 auto;}
+.outer-head-title{font-size: 30px;color: #444;line-height: 30px;margin-bottom: 30px;}
+.outer-head-nav{height: 30px;width: 100%;}
+.outer-head-nav .nav-block{margin-right: 30px;float: left;position: relative;}
+.outer-head-nav .nav-block a{display: block;font-size: 16px;height:100%;width: 100%;}
+.outer-head-nav .nav-block a:hover{color: #4685ff;}
+.outer-head-nav .nav-block.active a{color: #4685ff;}
+.outer-head-nav .nav-block.active{border-bottom: solid 2px #4685FF;height: 28px;}
+
+.main-content{width:1200px;margin:20px auto;}
+.content-core{background-color:#fff;min-height: 400px;padding:30px 20px;}
+
+/**vue防闪烁，延迟渲染**/
+[v-cloak]{display:none}
+
+/**工具栏样式**/
+.toolBox{font-size: 14px;color: #444;padding:0 20px;}
+.toolBox input,.toolBox button{-webkit-border-radius:15px;-moz-border-radius:15px;-ms-border-radius:15px;-o-border-radius:15px;border-radius:15px;}
+.toolBox input{padding:0 20px;height: 30px;line-height:30px;border: 1px solid #dcdcdc;}
+.toolBox .searchInput{width: 400px;margin-right: 20px;}
+.toolBox .tip{height: 30px;margin-right: 20px;line-height: 30px;font-size: 14px;float:left;}
+.toolBox .time-inp{background: url("../images/icon-time.png") no-repeat right center;background-size: 30px 30px;border-radius: 30px;width: 140px;color: #444; }

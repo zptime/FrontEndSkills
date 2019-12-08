@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue组件注册</title>
+    <script src="../../../static/contrib/js/vue.js"></script>
+</head>
+<body>
+<!-- 定义模板 -->
+<template id="myAccount">
+    <div>
+        <a href="#" @click="login">登录1</a>
+        <h2>登录页面3</h2>
+        <h3>注册页面3</h3>
+    </div>
+</template>
+
+<div id="app">
+    <account></account>
+</div>
+
+<script>
+    //方法一： Vue.extend 定义组件，Vue.component 注册组件
+    //第一步：使用 Vue.extend 定义组件
+    var myAccount = Vue.extend({
+//        template: '<div><h2>登录页面</h2> <h3>注册页面</h3></div>' // 通过 template 属性，指定了组件要展示的HTML结构。template 是 Vue 中的关键字，不能改。
+        template:'#myAccount'
+    });
+    //第二步：使用 Vue.component 注册组件
+    // Vue.component('组件的名称', 创建出来的组件模板对象)
+    Vue.component('account', myAccount); //第一个参数是组件的名称（标签名），第二个参数是模板对象
+
+
+    new Vue({
+        el: '#app',
+        data: {
+
+        },
+        methods: {
+
+        }
+    });
+</script>
+
+</body>
+</html>

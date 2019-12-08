@@ -1,0 +1,80 @@
+/*@import "../../pub/jqGrid/themes/cupertino/jquery-ui.min.css";*/
+.norecords{display:none;color:#ACACAC;margin:90px 0 90px 0;text-align:center;width:auto}
+.zebra{background-color:#f5f5f5;}
+.ui-widget{font-size:14px;color:#444444;}
+.ui-jqgrid .ui-jqgrid-view{font-size:1em;left:0;padding:0;position:relative;top:0}
+.ui-jqgrid .ui-jqgrid-view input{width: auto;}
+.ui-jqgrid .ui-jqgrid-hbox{float:left;padding-right:20px}
+.ui-jqgrid .ui-jqgrid-htable{margin:0;table-layout:fixed}
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr,.ui-th-ltr{border-left:0 none}
+.ui-jqgrid .ui-jqgrid-htable th.ui-th-column,.ui-th-column{border-bottom:0 none;border-top:0 none;overflow:hidden;text-align:center;white-space:nowrap}
+.ui-jqgrid .ui-jqgrid-htable th{height:22px;padding:0 2px}
+.ui-jqgrid .ui-jqgrid-htable th div{height:17px;overflow:hidden;position:relative}
+.ui-widget button,.ui-widget input,.ui-widget select,.ui-widget textarea{font-size:1em}
+.ui-jqgrid .ui-jqgrid-resize{display:none;}
+.ui-jqgrid .ui-jqgrid-sortable{cursor:pointer}
+.ui-jqgrid .ui-jqgrid-bdiv{margin:0;overflow:auto;padding:0;position:relative;text-align:left}
+.ui-jqgrid .ui-jqgrid-btable{margin:0;outline-style:none;table-layout:fixed}
+.ui-state-highlight,.ui-widget-content .ui-state-highlight,.ui-widget-header .ui-state-highlight{border:1px solid #FAD42E;color:#363636}
+.ui-jqgrid tr.jqgrow td{border-bottom-width:0;height:40px}
+.ui-jqgrid tr.ui-row-ltr td{border-right-width:0;text-align:left}
+.ui-jqgrid td input,.ui-jqgrid td select .ui-jqgrid td textarea{margin:0}
+.ui-state-focus,.ui-state-hover,.ui-widget-content .ui-state-focus,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-focus,.ui-widget-header .ui-state-hover{color:#1d5987}
+.ui-jqgrid-htable th div{height:30px;overflow:hidden;position:relative}
+.ui-jqgrid-view{border:1px solid #f5f5f5;border-radius: 8px;}
+.ui-jqgrid .ui-pg-button span{display:block;margin:2px;float:left}
+.ui-jqgrid .ui-pg-selbox{width:50px;}
+/*top page info*/
+.grid-top-pager-info{color: #888}
+/*更多操作列*/
+.ui-jqgrid tr.ui-row-ltr td[aria-describedby$="oper"] {overflow-x: visible !important;overflow-y: visible !important;}
+.ui-jqgrid .ui-jqgrid-bdiv{overflow-x: visible !important;overflow-y: visible !important;}
+.ui-jqgrid .ui-jqgrid-view{z-index: 99;}
+/*header*/
+.ui-state-default,.ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{font-weight:400;background-color: #e5e5e5;
+    border-top-left-radius: 8px;border-top-right-radius: 8px;}
+/**rownum*/
+.jqgrid-rownum.ui-state-default{background-color: inherit;border-top-left-radius: 0;border-top-right-radius: 0;}
+.jqgh_grid_type_select{font-size: 12px;border-radius: 4px;display:inline-block;width:60px;height: 28px;}
+/*table*/
+.ui-jqgrid tr.jqgrow{outline-style:none;}
+.ui-jqgrid tr.jqgrow td {text-overflow: ellipsis;}
+.ui-jqgrid .cell-photo{width: 32px;height: 32px;border-radius:16px;vertical-align: middle;display: inline-block;margin-right: 5px;}
+/*pager*/
+.ui-jqgrid .ui-jqgrid-toppager .ui-pager-control, .ui-jqgrid .ui-jqgrid-pager .ui-pager-control {height:50px;border:none;}
+.ui-jqgrid .ui-jqgrid-pager .ui-pager-table{background-color: #ffffff;border:none;padding-top:10px;}
+.ui-jqgrid .ui-pg-table td{line-height: 26px;}
+.ui-jqgrid .ui-pg-input,.ui-jqgrid .ui-jqgrid-toppager .ui-pg-input {/*margin:0 12px 0 10px;*/height:18px;width: 32px;padding: 3px 2px;text-align: center;border:1px solid #dcdcdc;border-radius: 6px;}
+.ui-jqgrid .ui-icon{width: 26px;height:26px;background-image:none;}
+.ui-jqgrid .ui-icon-seek-prev{background-image: url("../image/icon-seek-prev-dis170301.png")}
+.ui-jqgrid .ui-icon-seek-next{background-image: url("../image/icon-seek-next-dis170301.png")}
+.ui-jqgrid .ui-icon-seek-first{background:none; padding: 0 16px 0 0;}
+.ui-jqgrid .ui-icon-seek-end{background:none; padding: 0 0 0 16px;}
+.ui-jqgrid .ui-icon-seek-first.first-dis{color: #dcdcdc;}
+.ui-jqgrid .ui-icon-seek-end.end-dis{color: #dcdcdc;}
+.ui-jqgrid .ui-icon-seek-first.first-active{color: #308ce3;}
+.ui-jqgrid .ui-icon-seek-end.end-active{color: #308ce3;}
+.ui-jqgrid .ui-separator{height: 0;border-left:none;}
+.ui-jqgrid .ui-pg-selbox {width: 60px;height: 26px;border: 1px solid #ccc;padding: 0 0 0 10px;margin: 0 0 0 30px;}
+.ui-icon-seek-prev, .ui-icon-seek-next, .ui-icon-seek-first, .ui-icon-seek-end, .ui-jqgrid .ui-pg-selbox:hover{cursor: pointer;}
+
+#grid_next_pager_countinfo{padding-left:15px;}
+/**checkbox**/
+.ui-jqgrid input{width: auto;}
+.jqgrow td label{cursor: pointer;color:#308ce3;}
+.jqgrow td label:hover{color:orange;text-decoration: underline;}
+.ui-jqgrid th[role=columnheader] label.cb_label{width:12px;height:12px;cursor:pointer;position:relative;display:block;top:-16px;left:3px;background:#fff;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;border:1px solid #308ce3}
+.ui-jqgrid td[role=gridcell] label.cb_label{width:12px;height:12px;cursor:pointer;position:relative;display:block;margin:0 0 0 5px;top:-8px;left:0;background:#fff;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px;border:1px solid #308ce3}
+.ui-jqgrid td[role=gridcell] label.cb_label:after,.ui-jqgrid th[role=columnheader] label.cb_label:after{content:'';width:7px;height:3px;position:absolute;top:3px;left:2px;border:1px solid #308ce3;border-top:none;border-right:none;background:0 0;filter:alpha(Opacity=0);opacity:0;-moz-transform:rotate(-45deg);-ms-transform:rotate(-45deg);-webkit-transform:rotate(-45deg);transform:rotate(-45deg)}
+.ui-jqgrid td[role=gridcell] input[type=checkbox],.ui-jqgrid th[role=columnheader] input[type=checkbox]{visibility:hidden}
+.ui-jqgrid td[role=gridcell] input[type=checkbox]:checked+label.cb_label:after,.ui-jqgrid th[role=columnheader] input[type=checkbox]:checked+label.cb_label:after{opacity:1}
+
+
+/**grid表格tooltip**/
+.grid .mytooltip{color:#000000;position: relative;cursor: pointer;display: inline-block;  font-size: 26px;  vertical-align: middle;  line-height: 38px;  height: 38px;  transform: translate(0,-8px);}
+.grid .mytooltip:hover{color:#4685ff !important;}
+.grid .mytooltip .mytooltiptext{line-height:2;visibility:hidden;width:100px;background-color:rgba(0,0,0,0.8);color:#fff;text-align:center;position:absolute;z-index:1;margin-left:0;top:24px;left:8px;transform:translate(15px,-50%); border-radius: 4px;font-size: 14px;}
+.grid .mytooltip .mytooltiptext::after{content:"";position:absolute;bottom:50%;left:0;margin-left:-5px;white-space: normal;border-width:6px;border-style:solid;transform: translate(-6px,6px);border-color:transparent rgba(0,0,0,0.8) transparent transparent}
+.grid .mytooltip:hover .mytooltiptext{visibility:visible}
+.grid .mytooltip .mytooltiptext li{display:block;list-style-type:disc;margin:0;padding:8px;text-align: center;cursor: pointer!important;}
+.grid .mytooltip .mytooltiptext li:hover{background-color: #4685ff;}

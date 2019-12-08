@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <!--<meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+    <title>vue组件注册</title>
+    <script src="../../../static/contrib/js/vue.js"></script>
+</head>
+<body>
+<!-- 定义模板 -->
+<template id="myAccount">
+    <div>
+        <!-- 在组件的模板中，调用本组件中的data -->
+        {{ myData }}
+        <a href="#" v-on:click="login">登录1</a>
+        <h2>登录页面3</h2>
+        <h3>注册页面3</h3>
+    </div>
+</template>
+
+<!-- 定义模板 -->
+<template id="loginTmp">
+    <h3>这是私有的login组件2</h3>
+</template>
+
+<!-- 定义模板 -->
+<template id="tmpl">
+    <div>
+        <input type="button" value="让count加1" @click="increment">
+        <h3>{$ count $}</h3>
+    </div>
+</template>
+
+<div id="app">
+    <!-- 如果要使用组件，直接把组件的名称，以 HTML 标签的形式，引入到页面中，即可 -->
+    <account></account>
+    <account2></account2>
+    <account3></account3>
+
+    <!-- 使用Vue实例内部的私有组件 -->
+    <my-login></my-login>
+    <my-login2></my-login2>
+
+    <!-- 第一次调用组件 -->
+    <counter></counter>
+    <hr>
+    <!-- 第二次调用组件 -->
+    <counter></counter>
+
+    <!-- 温馨提示：`.prevent`可以阻止超链接的默认事件 -->
+    <a href="" @click.prevent="flag=true">登录</a>
+    <a href="" @click.prevent="flag=false">注册</a>
+
+    <!-- 登录组件/注册组件，同时只显示一个 -->
+    <login v-if="flag"></login>
+    <register v-else="flag"></register>
+
+    <!-- Vue提供了 component ,来展示对应名称的组件 -->
+    <!-- 【重要】component 是一个占位符, `:is` 属性,可以用来指定要展示的组件名称。这里，我们让 login 组件显示出来 -->
+    <component :is="'login'"></component>
+    <component :is="'register'"></component>
+
+    <!-- 点击按钮后，设置变量`comName`为不同的值，代表着后面的component里显示不同的组件 -->
+    <a href="" @click.prevent="comName='login'">登录</a>
+    <a href="" @click.prevent="comName='register'">注册</a>
+
+    <!-- Vue提供了 component ,来展示对应名称的组件 -->
+    <!-- component 是一个占位符, :is 属性,可以用来指定要展示的组件的名称 -->
+    <!-- 此处的`comName`是变量，变量值为组件名称 -->
+    <component :is="comName"></component>
+</div>
+
+<script>
+    //方法一： Vue.extend 定义组件，Vue.component 注册组件
+    //第一步：使用 Vue.extend 定义组件
+    var myAccount = Vue.extend({
+        template: '<div><h2>登录页面</h2> <h3>注册页面</h3></div>' // 通过 template 属性，指定了组件要展示的HTML结构。template 是 Vue 中的关键字，不能改。
+    });
+    //第二步：使用 Vue.component 注册组件
+    // Vue.component('组件的名称', 创建出来的组件模板对象)
+    Vue.component('account', myAccount); //第一个参数是组件的名称（标签名），第二个参数是模板对象
+
+
+    //方法二：定义、注册组件，一步到位
+    //定义、注册组件：第一个参数是组件的名称（标签名），第二个参数是组件的定义
+    Vue.component('account2', {
+        template: '<div><h2>登录页面2</h2> <h3>注册页面2</h3></div>'   // template 是 Vue 中的关键字，不能改。
+    });
+
+    //方法三：将组件内容定义到template标签中去。
+    //定义、注册组件
+    Vue.component('account3', {
+        template: '#myAccount',    // template 是 Vue 中的关键字，不能改。
+        //组件中的 data
+        //【注意】组件中的data，不再是对象，而是一个方法（否则报错）；而且这个方法内部，还必须返回一个对象才行
+        // 组件中 的data 数据,使用方式,和实例中的 data 使用方式完全一样!!!
+        data: function () {
+            return {
+                myData: 'smyhvae'
+            }
+        },
+        //组件中的 method
+        methods: {
+            login: function () {
+                alert('login操作');
+            }
+        }
+    });
+
+    var dataObj = { count: 0 }
+
+    // 这是一个计数器的组件, 身上有个按钮,每当点击按钮,让 data 中的 count 值 +1
+    Vue.component('counter', {
+        template: '#tmpl',
+        data: function () {
+//            return dataObj //当我们return全局的dataObj的时候，子组件们会共享这个dataObj
+            return { count: 0 } // 【重要】return一个**新开辟**的对象数据
+        },
+        methods: {
+            increment:function () {
+                this.count++
+            }
+        }
+    })
+
+    Vue.component('login', {
+        template: '<h3>登录组件</h3>'
+    })
+
+    Vue.component('register', {
+        template: '<h3>注册组件</h3>'
+    })
+
+    new Vue({
+        el: '#app',
+        components: { // 定义、注册Vue实例内部的私有组件
+            myLogin: {
+                template: '<h3>这是私有的login组件</h3>'
+            },
+            myLogin2: {
+                template: '#loginTmp'
+            }
+        },
+        data: {
+            flag: false,
+            comName: 'login' // 当前 component 中的 :is 绑定的组件的名称
+        },
+        methods: {
+
+        }
+    });
+</script>
+
+</body>
+</html>

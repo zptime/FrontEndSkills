@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+    <link rel="stylesheet" href="./css/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="./css/jquery.ui.plupload.css"/>
+    <style>
+        .upload{width:700px;height: 370px;margin:0 auto;}
+        .plupload_content{bottom:70px;}
+        .plupload_wrapper table{}
+        .plupload_container{height:440px;}
+        .upload .ui-state-highlight{border:none;}
+    </style>
+    <!--方式二：通过type:2，content: './uploadFile.html'打开-->
+</head>
+<body>
+<div id="modal-upload" class="upload hidden">
+    <div id="uploader-file">
+        <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+    </div>
+</div>
+</body>
+
+<script src="./js/plupload.full.min.js"></script>
+<script src="./js/zh_CN.js"></script>
+<script src="./js/jquery-ui.min.js"></script>
+<script src="./js/jquery.ui.plupload.js"></script>
+<script>
+    $(function () {
+        // 上传附件初始化
+        var MAXNUM_FOR_FILES = 8; // 上传附件个数限制
+        var files = [];
+        initUploader('uploader-file',
+            'http://interact-test.hbeducloud.com/api/common/upload/file', '50mb',
+            'file', [], MAXNUM_FOR_FILES, function (data) {
+                files.push(data);
+            });
+    });
+
+    function initUploader(uploader_id, url, max_file_size, file_data_name, filters, max_num,callBack) {
+        $("#"+uploader_id).plupload({
+            runtimes : 'html5,flash,silverlight,html4',
+            url : url,
+            max_file_size : max_file_size,
+            file_data_name: file_data_name,
+            filters : filters,
+            dragdrop: true,
+            views: {
+                list: true,
+                thumbs: true, // Show thumbs
+                active: 'list'
+            },
+            flash_swf_url : './js/Moxie.swf', // Flash settings
+            silverlight_xap_url : './js/Moxie.xap', // Silverlight settings
+            init: {
+                FilesAdded: function(up, file) {
+                    //提示语隐藏
+                    $('.plupload_droptext').css('display','none');
+
+                    // 上传文件个数限制
+                    if(up.files.length > max_num) {
+                        layer.msg('文件个数超过限制！');
+                        up.splice(max_num, 999);
+                        return;
+                    }
+                },
+                FileUploaded: function(up, file, result) {
+                    var res = JSON.parse(result.response);
+                    res.d.file_size = convertFileSize(res.d.file_size);
+                    callBack(res.d);
+                },
+                UploadComplete: function(up, file) {
+                    up.splice();
+                    //提示语显示
+                    $('.plupload_droptext').css('display','block');
+                    layer.closeAll();
+                },
+                Error: function(up, err) {
+                    // 报错
+                    layer.msg(err.message);
+                }
+            }
+        });
+
+        // 界面上传文件格式大小说明
+        var type_tips = filters.length === 0 ? '' : '支持上传'+filters[0].extensions+'格式，';
+        var size_tips = '大小不得超过'+max_file_size+'<br>';
+        $("#"+uploader_id+" .plupload_droptext").prepend(type_tips + size_tips);
+    }
+</script>
+</html>

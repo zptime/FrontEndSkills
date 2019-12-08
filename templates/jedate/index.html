@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jedate日期控件</title>
+    <link rel='stylesheet' href='../../static/resources/css/main.css'>
+    <link rel='stylesheet' href='./skin/jedate.css'>
+</head>
+<body>
+<div class="container">
+    <div class="title">jedate日期控件- 使用实例</div>
+    <div class="desc">时间控件带初始值初始化，并且实现开始时间和截止时间联动</div>
+    <div class="desc">
+        <span>时间</span>
+        <input id="s_time" class="date-container" placeholder="请选择时间" readonly type="text">
+        <span>至</span>
+        <input id="e_time" class="date-container" placeholder="请选择时间" readonly type="text">
+    </div>
+</div>
+</body>
+
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="./js/jedate.js"></script>
+
+<script>
+    $(function () {
+        //时间控件初始化
+        timeControlInit('s_time','e_time',function (sTime,eTime) {
+            console.log(sTime+'....'+eTime);
+        });
+    });
+
+    /**时间控件初始化**/
+    function timeControlInit(sTimeId,eTimeId,callback) {
+        var start = {}, end = {};
+        jeDate('#'+sTimeId, {
+            format: 'YYYY-MM-DD',
+            isClear:false,//是否显示清除按钮
+            isinitVal:true,//是否初始化日期
+            initDate:[{MM:1,DD:1},false],//isinitVal未true时，设置日期
+            theme:{bgcolor:"#00A1CB",pnColor:"#00CCFF"},//设置主题色
+            minDate: '2018-1-1', //设定最小日期为当前日期
+            maxDate:function (that) {//设定最大日期为当前日期
+                return "" ? jeDate.nowDate({DD:0,format:'YYYY-MM-DD'}) : $('#'+eTimeId).val();
+            },
+            donefun: function (obj) {
+                end.minDate = obj.val; //开始日选好后，重置结束日的最小日期
+                jeDate("#"+eTimeId, LinkageEndDate(false));
+                callback($('#'+sTimeId).val(),$('#'+eTimeId).val());
+            }
+        });
+        jeDate('#'+eTimeId, LinkageEndDate);
+
+        function LinkageEndDate(istg) {
+            return {
+                trigger: istg || "click",
+                format: 'YYYY-MM-DD',
+                isClear:false,
+                isinitVal: true,
+                isToday:true,
+                theme:{bgcolor:"#00A1CB",pnColor:"#00CCFF"},
+                minDate: function (that) {//设定最小日期为当前日期
+                    return "" ? jeDate.nowDate({DD:0,format:'YYYY-MM-DD'}) : $('#'+sTimeId).val();
+                },
+                maxDate: '2099-06-16', //设定最大日期为当前日期
+                donefun: function (obj) {
+                    start.maxDate = obj.val; //将结束日的初始值设定为开始日的最大日期
+                    callback($('#'+sTimeId).val(),$('#'+eTimeId).val());
+                }
+            };
+        }
+    }
+</script>
+</html>

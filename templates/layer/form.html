@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新版layer弹框</title>
+    <link rel="stylesheet" href="./skin/layer.css"/>
+    <script>
+        document.write( " <link rel='stylesheet' href='./myskin/style.css?rnd= " + Math.random() + " '>" );
+        document.write( " <link rel='stylesheet' href='../../static/resources/css/main.css?rnd= " + Math.random() + " '>" );
+        document.write( " <link rel='stylesheet' href='../../static/resources/css/base.css?rnd= " + Math.random() + " '>" );
+        document.write('<link rel="stylesheet" href="../../static/pub/dropDown/css/jquery.dropdown.min.css?rnd= ' +  Math.random() + '" /> ');
+    </script>
+    <style>
+        .dropdown-main ul{max-height: 130px;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title">新版layer弹框-表单弹框</div>
+    <div class="desc">
+        实例来源：用户中心系统-学校管理-编辑教师
+        <br>
+        <a href="http://usercenter-test.hbeducloud.com/index?nav=manage&view=teacher">
+            http://usercenter-test.hbeducloud.com/index?nav=manage&view=teacher
+        </a>
+    </div>
+    <div id="main" class="content" v-cloak>
+        <button onclick="optBtn(1)">表单弹框</button>
+
+        <!--表单提交和展示-弹出框-->
+        <div id="modal-form" class="hidden">
+            <form>
+                <table class="table-form">
+                    <tr>
+                        <th width="10%"></th>
+                        <th width="35%"></th>
+                        <th width="10%"></th>
+                        <th width="35%"></th>
+                    </tr>
+                    <tr>
+                        <td><label class="required" for="CH_full_name">姓名</label></td>
+                        <td><input type="text" name="full_name" v-model="form.full_name" check="CH_full_name"  placeholder="输入姓名"></td>
+                        <td><label class="required" for="CH_sex">性别</label></td>
+                        <td>
+                            <label class="radio-container"><input type="radio" name="sex" value="男" v-model="form.sex" check="CH_sex"/>男</label>
+                            <label class="radio-container"><input type="radio" name="sex" value="女" v-model="form.sex" check="CH_sex"/>女</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>工号</label></td>
+                        <td><input type="text" name="school_code" v-model="form.school_code" placeholder="输入工号"></td>
+                        <td><label class="required" for="CH_title" placeholder="输入工号">职务</label></td>
+                        <td>
+                            <!--单选样式-->
+                            <!--<select type="text" name="title" v-model="form.title" check="CH_title">-->
+                                <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+                                <!--<option v-for="title in titleList | filterBy title_list_filter" value="{$ title.name $}">{$ title.name $}</option>-->
+                            <!--</select>-->
+
+                            <!--多选样式-->
+                            <div class="dropDown" style="width:182px;">
+                                <select style="display:none" multiple placeholder="--请选择--">
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label class="required" for="CH_mobile">手机号</label></td>
+                        <td><input type="tel" v-model="form.mobile" name="mobile" check="CH_mobile" placeholder="输入手机号"></td>
+                        <td><label>身份证</label></td>
+                        <td><input type="text" v-model="form.id_card" name="id_card" placeholder="输入身份证号码"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/contrib/js/vue.js"></script>
+<script src="../../static/pub/dropDown/js/jquery.dropdown.min.js"></script>
+<script src="../../static/contrib/js/jquery.form.min.js"></script>
+<script src="./layer.js"></script>
+<script>document.write('<script src="../../static/resources/js/utils.js?rnd='+Math.random()+'"><'+'/script>')</script>
+<script>document.write('<script src="../../static/resources/js/URLs.js?rnd='+Math.random()+'"><'+'/script>')</script>
+<script>
+    var dutyDropDown;
+    var vm = new Vue({
+        el: '#main',
+        data: {
+            titleList: [], //职务列表
+            dropDownTitle:[],//下拉框职务列表
+            form: {
+                full_name: '',
+                sex: '男',
+                school_code: '',
+                title: '',
+                mobile: '',
+                id_card: ''
+            }
+        },
+        ready:function () {
+            var self = this;
+
+            get_title_list();
+
+            //初始化layer内form表单信息
+            myajax({
+                url: URLs().ATeacherInfo,
+                data: {
+                    teacher_id: '1'
+                }
+            }, function (data) {
+                if (data.c == 0){
+                    extend(self.form, data.d[0]);
+                    optBtn(1);
+                }
+            });
+        },
+        methods:{
+            title_list_filter: function(title) {
+                return title.name != "班主任";
+            }
+        }
+    });
+
+    //获取职务列表
+    function get_title_list(){
+        myajax({
+            url: URLs().ATitleList
+        }, function (data) {
+            if (data.c == 0){
+                vm.titleList = data.d;
+                dropDownInit();
+            }
+        })
+    }
+
+    function optBtn(id){
+        layer.open({
+            title: id?'编辑教师':'新增教师',
+            type: 1,
+            area: ['600px', '360px'],
+            content: $('#modal-form'),
+            btn:['确定','取消'],
+            success:function () {
+                layerSuccess(id);
+            },
+            yes: function (index) {
+                layerOK(id,index);
+            }
+        });
+    }
+
+    //弹框打开成功操作
+    function layerSuccess(id) {
+        if(id){//编辑
+            for(var i=0;i<vm.dropDownTitle.length;i++){
+                if(vm.form.title.indexOf(vm.dropDownTitle[i].name)!=-1){
+                    vm.dropDownTitle[i].selected = true;
+                }else{
+                    vm.dropDownTitle[i].selected = false;
+                }
+            }
+            dropDownInit(id);
+        }else{//新增
+            dropDownInit();
+        }
+    }
+
+    //弹框“确定”操作
+    function layerOK(id,index) {
+        if (!myCheck({ element: '#modal-form'})) {
+            return;
+        }
+        var data = SerializeToJSON($('#modal-form form').formSerialize());
+
+        //职务赋值
+        data['title'] = vm.form.title;
+        if(data.title==''){
+            layer.msg('职务不允许为空');
+            return false;
+        }
+
+        if (id){
+            data['id'] = id;
+        }
+
+        alert(JSON.stringify(data));
+
+//        myajax({
+//            url: id? '/api/update/teacher':'/api/add/teacher',
+//            data: {
+//                "teacher_info": JSON.stringify(data)
+//            }
+//        },function(data){
+//            if (data.c == 0){
+//                layer.close(index);
+//                layer.msg(id?'编辑成功':'添加成功');
+//            }
+//        });
+    }
+
+
+    /**职务多选框赋值**/
+    function dropDownInit(id) {
+        //职务多选框赋值
+        if(!id){
+            vm.dropDownTitle = [];
+            for(var i=0;i<vm.titleList.length;i++){
+                vm.dropDownTitle.push({
+                    "id":vm.titleList[i].id,
+                    "name":vm.titleList[i].name,
+                    "selected":false,
+                    "disabled":false
+                });
+                if(vm.titleList[i].name=="教师" || vm.titleList[i].name=="班主任"){
+                    vm.dropDownTitle[i].disabled = true;
+                }
+            }
+
+            vm.form = {
+                full_name: '',
+                sex: '男',
+                school_code: '',
+                title: '',
+                mobile: '',
+                id_card: ''
+            }
+        }
+
+        //职务多选框初始化
+        if(dutyDropDown){
+            dutyDropDown.destroy();
+        }
+        dutyDropDown = $('.dropDown').dropdown({
+            data:vm.dropDownTitle,
+            searchable: false,
+            choice: function () {
+                //console.log(arguments,this);
+                vm.form.title = $('.dropdown-display').attr('title');
+            }
+        }).data('dropdown');
+    }
+</script>
+</html>

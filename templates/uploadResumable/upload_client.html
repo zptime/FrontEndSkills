@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+    <script>
+        document.write('<link rel="stylesheet" href="./css/resumable.css?version='+Math.random()+'">');
+    </script>
+    <style>
+        .btn-medium{width: 100px;height: 32px;line-height: 32px;text-align: center;border: solid 1px #4685FF;color: #4685FF;cursor: pointer;border-radius: 6px;background: #FFFFFF;outline: none;overflow: hidden;}
+        .btn-medium:hover{background: #4685FF;color: #FFFFFF;}
+        .re-upload .upload-addfile-bottom{display: none !important;}
+    </style>
+</head>
+<body>
+    <div class="lay-upload">
+        <div class="re-upload" id="reUpload">
+        </div>
+    </div>
+</body>
+<script src="../../static/contrib/js/jquery.min.js"></script>
+<script src="../../static/pub/layer/layer.js"></script>
+<script src="./js/spark-md5.js"></script>
+<script>
+    document.write( " <script src='./js/django-resumable.js?version=" + Math.random() + " '></s" + "cript> " );
+    document.write( " <script src='./js/resumable.js?version=" + Math.random() + " '></s" + "cript> " );
+    document.write( " <script src='../../static/resources/js/utils.js?version=" + Math.random() + " '></s" + "cript> " );
+</script>
+<script>
+    initDjangoResumable();
+    function initDjangoResumable() {
+        var uploadUrl = getQueryString('uploadUrl');
+        if (!uploadUrl){
+            layer.msg('未提供文件上传的URL');
+            return;
+        }
+
+        "use strict";
+         var dj;
+
+        if (new Resumable().support) {
+            dj = new DjangoResumable({
+                xhrfile:{
+                    loaded: function(){  //('implements your file loaded callback code here...');
+                    },
+                    beforeStart: function () { //('implements check conditions code here...')
+                        return true;
+                    },
+                    start: function () { //('implements your file start callback code here...');
+                    },
+                    error: function (data) { //('implements your file error callback code here...');
+                    },
+                    added: function () { //('implements your file added callback code here...');
+                    },
+                    success: function (data) { //('implements your file success callback code here...');
+                        if (data.c != 0) {
+                            return;
+                        }
+                        var file = '[' + data.d[0].id + ']';
+                        myajax({
+                            url: uploadUrl,
+                            type: 'post',
+                            data: {
+                                file_id: parent.window.vm.currentFileId,
+                                file_obj_id_list: file
+                            }
+                        }, function (data) {
+                            afterUploadAllFiles(dj);
+                        })
+                    },
+                    progress: function (data) {}
+                },
+                view:{
+                    container: document.getElementById('reUpload'),
+                    addBtn: true,
+                    startBtn: true,
+                    dragable: true
+                },
+                resumableOptions:{
+                    //maxFiles:1,//最大文件数
+                    //fileType:['rar','zip','7z'],//
+                }
+            })
+            window.mydjResumable = dj;
+        }
+    }
+
+    function afterUploadAllFiles(dj) {
+        var waitNumber = 0;
+        var tbody = document.getElementById("reUpload_inp" + '-table-body');
+        var tds = tbody.querySelectorAll('td[for="resum_fileStatus"]');
+        dj.each(tds, function (td) {
+            if (td.innerHTML == '等待上传') {
+                waitNumber = waitNumber + 1;
+            }
+        });
+
+        if (waitNumber == 0) {
+            parent.layer.closeAll();
+        }
+    }
+
+    function fmt_operater(rowDOM){
+        var uniqueIdentifier = $(rowDOM).attr('id');
+        var res = '<label class="thisdel" style="cursor:pointer;" onclick="myRemoveFile(\''+uniqueIdentifier+'\')">删除</label>';
+        return res;
+    }
+    function myRemoveFile(id){
+        var mydjResumable = window.mydjResumable;
+        var r = mydjResumable.options.resumable;
+        var file = r.getFromUniqueIdentifier(id);
+        r.removeFile(file);
+        $('#'+id).remove();
+        var progressBar_box = $('#myfile-progressBar');
+        progressBar_box.children('progress').val(0);
+        progressBar_box.children('label').css('left','0px').html('0%');
+        progressBar_box.css('display','none');
+    }
+</script>
+</html>
